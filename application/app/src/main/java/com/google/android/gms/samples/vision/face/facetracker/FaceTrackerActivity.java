@@ -40,6 +40,7 @@ import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.samples.vision.face.facetracker.ui.camera.CameraSourcePreview;
 import com.google.android.gms.samples.vision.face.facetracker.ui.camera.GraphicOverlay;
+import com.google.android.gms.samples.vision.face.facetracker.FaceGraphic;
 
 import java.io.IOException;
 
@@ -51,7 +52,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     private static final String TAG = "FaceTracker";
 
     private CameraSource mCameraSource = null;
-
+    //private FaceGraphic mGraphic;
     private CameraSourcePreview mPreview;
     private GraphicOverlay mGraphicOverlay;
 
@@ -93,6 +94,9 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     }
 
     public void complete() {
+        //mGraphic mFaceHappiness;
+        float test = ((FaceGraphic)FaceGraphic.context).mFaceHappiness;
+        System.out.println("result is" + test);
         Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
     }
 

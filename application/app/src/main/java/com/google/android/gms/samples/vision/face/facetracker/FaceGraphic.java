@@ -15,6 +15,7 @@
  */
 package com.google.android.gms.samples.vision.face.facetracker;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -50,7 +51,8 @@ class FaceGraphic extends GraphicOverlay.Graphic {
 
     private volatile Face mFace;
     private int mFaceId;
-    private float mFaceHappiness;
+    public float mFaceHappiness = (float) 0.00;
+    public static FaceGraphic context;
 
     FaceGraphic(GraphicOverlay overlay) {
         super(overlay);
@@ -104,6 +106,9 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         canvas.drawText("right eye: " + String.format("%.2f", face.getIsRightEyeOpenProbability()), x + ID_X_OFFSET * 2, y + ID_Y_OFFSET * 2, mIdPaint);
         canvas.drawText("left eye: " + String.format("%.2f", face.getIsLeftEyeOpenProbability()), x - ID_X_OFFSET*2, y - ID_Y_OFFSET*2, mIdPaint);
 
+        //System.out.println(face.getIsSmilingProbability());
+        mFaceHappiness = (mFaceHappiness + face.getIsSmilingProbability())/2;
+        context = this;
         // Draws a bounding box around the face.
         float xOffset = scaleX(face.getWidth() / 2.0f);
         float yOffset = scaleY(face.getHeight() / 2.0f);
