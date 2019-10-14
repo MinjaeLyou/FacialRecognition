@@ -28,6 +28,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -72,6 +74,14 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.faceOverlay);
 
+        Button btn = (Button) findViewById(R.id.button2);
+//
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FaceTrackerActivity.this.complete();
+            }
+        });
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -80,6 +90,10 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         } else {
             requestCameraPermission();
         }
+    }
+
+    public void complete() {
+        Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -144,7 +158,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
 
         mCameraSource = new CameraSource.Builder(context, detector)
                 .setRequestedPreviewSize(640, 480)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setFacing(CameraSource.CAMERA_FACING_FRONT)
                 .setRequestedFps(30.0f)
                 .build();
     }
@@ -258,6 +272,32 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         }
     }
 
+
+
+//    private void closeCamera() {
+//        if(mCameraSource!=null){
+////            mCamera.stopPreview();
+////            mCamera.release();
+////            mCamera = null;
+//            mPreview.surfaceDestroyed(mPreview.getHolder());
+//            mPreview.getHolder().removeCallback(mPreview);
+//            mPreview.destroyDrawingCache();
+//            preview.removeView(mPreview);
+//        }
+//    }
+
+//    public void changeCamera() {
+//        onPause();
+//
+//        //isFrontCamera = !isFrontCamera;
+//        if (mCameraSource.getCameraFacing() == CameraSource.CAMERA_FACING_FRONT) {
+//            startCameraSource(Camera.CameraInfo.CAMERA_FACING_FRONT);
+//        } else {
+//            startCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+//        }
+////        mCamera.startPreview();
+//    }
+
     //==============================================================================================
     // Graphic Face Tracker
     //==============================================================================================
@@ -322,4 +362,6 @@ public final class FaceTrackerActivity extends AppCompatActivity {
             mOverlay.remove(mFaceGraphic);
         }
     }
+
+
 }

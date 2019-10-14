@@ -19,7 +19,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.samples.vision.face.facetracker.R;
 import com.google.android.gms.vision.CameraSource;
 
 import java.util.HashSet;
@@ -49,9 +51,12 @@ public class GraphicOverlay extends View {
     private float mWidthScaleFactor = 1.0f;
     private int mPreviewHeight;
     private float mHeightScaleFactor = 1.0f;
-    private int mFacing = CameraSource.CAMERA_FACING_BACK;
+    private int mFacing = CameraSource.CAMERA_FACING_FRONT;
     private Set<Graphic> mGraphics = new HashSet<>();
 
+//    Button btn = (Button) findViewById(R.id.button2);
+//
+//    btn.
     /**
      * Base class for a custom graphics object to be rendered within the graphic overlay.  Subclass
      * this and implement the {@link Graphic#draw(Canvas)} method to define the
