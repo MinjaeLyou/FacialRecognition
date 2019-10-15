@@ -19,4 +19,14 @@ router.post('/addResult',wrap(async (req, res) => {
     });
 }));
 
+router.get('/getAllResult/:user', wrap(async (req, res) => {
+  console.log(req.params.user)
+  const result = await models.face.findAll({
+    where: {
+      userId: req.params.user
+    }
+  });
+  res.send(result);
+}));
+
 module.exports = router;
