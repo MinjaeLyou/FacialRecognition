@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+const wrap = require('express-async-wrap');
+const models = require('../models');
+
 router.post('/addResult',wrap(async (req, res) => {
   //console.log(req.body);
   const face = await models.face.create({
