@@ -20,11 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(30),
         allowNull: false,
         comment: '사용자 이름'
-      },
-      manufacturer: {
-        type: DataTypes.STRING(30),
-        allowNull: false,
-        comment: '제휴사'
       }
     }, {
       tableName: 'user',
