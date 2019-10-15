@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define('user', {
+    const users = sequelize.define('users', {
       id: {
         type: DataTypes.INTEGER(11),
         autoIncrement: true,
@@ -22,14 +22,14 @@ module.exports = (sequelize, DataTypes) => {
         comment: '사용자 이름'
       }
     }, {
-      tableName: 'user',
+      tableName: 'users',
       comment: '유저',
       charset: 'utf8',
       collate: 'utf8_general_ci'
     });
-    user.associate = function (models) {
-      user.hasMany(models.face, { foreignKey: { name: 'userId', allowNull: false}});
+    users.associate = function (models) {
+      users.hasMany(models.face, { foreignKey: { name: 'userId', allowNull: false}});
     };
-    return user;
+    return users;
   };
   

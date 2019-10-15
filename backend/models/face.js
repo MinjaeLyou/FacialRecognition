@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8_general_ci'
     });
     face.associate = function (models) {
-      face.belongsTo(models.user, { foreignKey: { name: 'userId', allowNull: false}});
+      face.belongsTo(models.users, { foreignKey: { name: 'userId', allowNull: false}});
     };
     return face;
   };
