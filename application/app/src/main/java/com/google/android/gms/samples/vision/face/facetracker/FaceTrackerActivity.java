@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,16 @@ import com.google.android.gms.samples.vision.face.facetracker.ui.camera.GraphicO
 import com.google.android.gms.samples.vision.face.facetracker.FaceGraphic;
 
 import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Activity for the face tracker app.  This app detects faces with the rear facing camera, and draws
@@ -71,6 +82,37 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.main);
+        System.out.println("Oneeeeee");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        System.out.println("Oneeeeee");
+        APIService retrofitExService = retrofit.create(APIService.class);
+        retrofitExService.getData("lmj").enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                System.out.println("Oneeeeee");
+                if (response.isSuccessful()) {
+                    Data body = response.body();
+                    System.out.println("Oneeeeee");
+                    if (body != null) {
+                        Log.d("data.getUserId()", body.getUserId() + "");
+                        Log.d("data.getPassword()", body.getPassword() + "");
+                        //Log.d("data.getTitle()", body.getResult());
+                        Log.e("getData end", "======================================");
+                        System.out.println(body.getUserId());
+                        System.out.println(body.getPassword());
+                        System.out.println("asdf");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+
+            }
+        });
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.faceOverlay);
