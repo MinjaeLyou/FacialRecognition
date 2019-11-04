@@ -58,7 +58,7 @@ public interface APIService {
      */
     @FormUrlEncoded
     @POST("/face/addResult")
-    Call<Data> postData(@FieldMap HashMap<String, Object> param);
+    Call<Data> postData(@FieldMap Float param);
 
 
     /**
