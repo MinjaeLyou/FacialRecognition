@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -196,6 +197,8 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         });
 
         Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), Analysis.class);
+        startActivity(intent);
     }
 
     /**
