@@ -21,7 +21,7 @@ router.post('/addResult',wrap(async (req, res) => {
   console.log(req.body.result)
   console.log(String(req.body.result))
   const face = await models.face.create({
-    posOrNeg: true,
+    posOrNeg: posOrNegg,
     result: String(req.body.result),
     userId: id.dataValues.id
   });
