@@ -174,9 +174,10 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                 .build();
         System.out.println("comcom");
         APIService retrofitExService = retrofit.create(APIService.class);
-        HashMap<Object, Object> input = new HashMap<>();
+        HashMap<String, Object> input = new HashMap<>();
         input.put("userId", "lmj");
-        retrofitExService.postData(avg).enqueue(new Callback<Data>() {
+        input.put("result", avg);
+        retrofitExService.postData(input).enqueue(new Callback<Data>() {
             @Override
             public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
                 if (response.isSuccessful()) {
