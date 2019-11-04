@@ -5,11 +5,27 @@ const wrap = require('express-async-wrap');
 const models = require('../models');
 
 router.post('/addResult',wrap(async (req, res) => {
-  //console.log(req.body);
+  console.log(req.body);
+  //const uid = req.body.userId
+  const id = await models.users.findOne({
+    where:{
+      userId: req.body.userId
+    }
+  })
+  console.log(id.dataValues.id)
+  let posOrNegg
+  if(req.body.result > 0.3){
+    posOrNegg = 1
+  } else
+    posOrNegg = 0
+  console.log(req.body.result)
+  console.log(String(req.body.result))
   const face = await models.face.create({
-    posOrNeg: req.body.posOrNeg,
-    result: req.body.result
+    posOrNeg: true,
+    result: String(req.body.result),
+    userId: id.dataValues.id
   });
+  console.log("222")
   if(face){
     res.send({
       result: true,

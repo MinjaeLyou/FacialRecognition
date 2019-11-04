@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         comment: '긍정/부정'
       },
       result: {
-        type: DataTypes.FLOAT(10),
+        type: DataTypes.STRING(10),
         allowNull: false,
         comment: '인식 척도'
       }
