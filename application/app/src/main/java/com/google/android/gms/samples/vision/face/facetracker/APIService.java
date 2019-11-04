@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
-    String URL = "http://c6c02c6a.ngrok.io";
+    String URL = "http://e38a8f1f.ngrok.io";
 
     /**
      * GET 방식, URL/posts/{userId} 호출.
@@ -57,7 +57,7 @@ public interface APIService {
      * @return Data 객체를 JSON 형태로 반환.
      */
     @FormUrlEncoded
-    @POST("/posts")
+    @POST("/face/addResult")
     Call<Data> postData(@FieldMap HashMap<String, Object> param);
 
 

@@ -55,6 +55,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Activity for the face tracker app.  This app detects faces with the rear facing camera, and draws
  * overlay graphics to indicate the position, size, and ID of each face.
@@ -138,7 +141,10 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     public void complete() {
         //mGraphic mFaceHappiness;
         float test = ((FaceGraphic)FaceGraphic.context).mFaceHappiness;
+        float result = 0;
+
         System.out.println("result is" + test);
+
         Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
     }
 
