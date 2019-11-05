@@ -19,8 +19,8 @@
       
         <div class="columns" style="margin: 0 30px;">
           <div class="column">
-              <h3>Line Chart</h3>
-              <line-chart></line-chart>
+              <h3>최근 결과값 추이</h3>
+              <line-chart v-if="lineloaded" :chartdata="linedata" :options="lineop"></line-chart>
           </div>
           
         </div>
@@ -28,7 +28,7 @@
         <div class="columns" style="margin: 0 30px;">
           <div class="column">
               <h3>최근 표정 분포(20회)</h3>
-              <pie-chart :data="chartData" :options="chartOptions"></pie-chart>
+              <pie-chart v-if="pieloaded" :data="pieData" :options="pieOptions"></pie-chart>
           </div>
           
         </div>
@@ -99,39 +99,53 @@ export default {
       sRound:0,
       submitted:0,
       totalSubmission:0,
-      chartOptions: {
+      pieOptions: {
         hoverBorderWidth: 20
       },
-      chartData: {
-        hoverBackgroundColor: "red",
-        hoverBorderWidth: 10,
-        labels: ["매우 긍정", "긍정", "보통", "부정", "매우 부정"],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#A3BAF6", "#B654FB"],
-            data: [40, 12, 16, 4, 28]
-          }
-        ]
-      },
+      pieData: null,
       cdata: null,
       cop: null,
-      loaded: false
+      loaded: false,
+      pieloaded: false,
+      lineloaded: false,
+      linedata: null,
+      lineop: null
     }
   },
   mounted: async function() {
     this.loaded = false
+    this.lineloaded = false
+    this.pieloaded = false
     const res = await this.$http.get(`http://localhost:3000/face/getAllResult/lmj`)
     let pos = 0
     let neg = 0
+    let ldata = []
+    let date = []
+    let pie = [0,0,0,0,0]
     for(let i = 0; i < 20; i++){
+      date[i] = await res.data[i].createdAt.split(' ')[0]
+      ldata[i] = await parseFloat(res.data[i].result)
       if(res.data[i].posOrNeg)
         pos += 1
       else
         neg += 1
+      
+      if(res.data[i].result < 0.2)
+        pie[0] += 1
+      else if(res.data[i].result < 0.4)
+        pie[1] += 1
+      else if(res.data[i].result < 0.6)
+        pie[2] += 1
+      else if(res.data[i].result < 0.8)
+        pie[3] += 1
+      else
+        pie[4] += 1
     }
-    console.log(neg)
+    console.log(date)
+    console.log(ldata)
     this.loaded = true
+    this.lineloaded = true
+    this.pieloaded = true
     this.cdata = {
       labels: ["긍정", "부정"],
         datasets: [
@@ -153,6 +167,54 @@ export default {
         ]
       }
     }
+    this.linedata = {
+      labels: date, 
+          datasets: [
+            {
+              label: '결과값',
+              backgroundColor: '#A3BAF6',
+              pointBackgroundColor: 'white',
+              borderWidth: 1,
+              pointBorderColor: '#249EBF',
+              //Data to be represented on y-axis
+              data: ldata
+            }
+          ]
+    }
+    this.lineop = {
+      scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              },
+              gridLines: {
+                display: true
+              }
+            }],
+            xAxes: [ {
+              gridLines: {
+                display: false
+              }
+            }]
+          },
+          legend: {
+            display: true
+          },
+          responsive: true,
+          maintainAspectRatio: false
+    }
+    this.pieData = {
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: ["매우 긍정", "긍정", "보통", "부정", "매우 부정"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#A3BAF6", "#B654FB"],
+            data: pie
+          }
+        ]
+      }
     //this.userNumber();
     this.getNotice();
     this.getGuide();
