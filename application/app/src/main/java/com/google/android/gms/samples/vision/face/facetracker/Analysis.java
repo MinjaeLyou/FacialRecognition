@@ -101,11 +101,15 @@ public class Analysis extends AppCompatActivity {
         lineChart = (LineChart)findViewById(R.id.line_chart);
 
         List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 1));
-        entries.add(new Entry(2, 2));
-        entries.add(new Entry(3, 0));
-        entries.add(new Entry(4, 4));
-        entries.add(new Entry(5, 3));
+
+//        entries.add(new Entry(1, 1));
+//        entries.add(new Entry(2, 2));
+//        entries.add(new Entry(3, 0));
+//        entries.add(new Entry(4, 4));
+//        entries.add(new Entry(5, 3));
+        for(int i = 0; i < result.size(); i++){
+            entries.add(new Entry(i + 1, result.get(i)));
+        }
 
         LineDataSet lineDataSet = new LineDataSet(entries, "이번 표정 분포");
         lineDataSet.setLineWidth(2);
