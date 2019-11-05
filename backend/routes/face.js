@@ -13,7 +13,7 @@ router.post('/addResult',wrap(async (req, res) => {
   })
   console.log(id.dataValues.id)
   let posOrNegg
-  if(req.body.result > 0.3){
+  if(req.body.result > 0.2){
     posOrNegg = 1
   } else
     posOrNegg = 0
@@ -38,11 +38,20 @@ router.post('/addResult',wrap(async (req, res) => {
 
 router.get('/getAllResult/:user', wrap(async (req, res) => {
   console.log(req.params.user)
-  const result = await models.face.findAll({
-    where: {
+  const id = await models.users.findOne({
+    where:{
       userId: req.params.user
     }
+  })
+  console.log(id.dataValues.id)
+  const result = await models.face.findAll({
+    where: {
+      userId: id.dataValues.id
+    },
+    offset: 0,
+    limit: 20
   });
+  console.log(result);
   res.send(result);
 }));
 
