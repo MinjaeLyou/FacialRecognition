@@ -147,10 +147,12 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         TimerTask m_task = new TimerTask() {
             @Override
             public void run() {
-                if(((FaceGraphic)FaceGraphic.context) != null) {
-                    result.add(((FaceGraphic)FaceGraphic.context).mFaceHappiness);
-                    count[0]++;
-                    //System.out.println(now);
+                if(((FaceGraphic)FaceGraphic.context) != null)  {
+                    if(((FaceGraphic)FaceGraphic.context).mFaceHappiness != result.get(count[0])){
+                        result.add(((FaceGraphic)FaceGraphic.context).mFaceHappiness);
+                        count[0]++;
+                        System.out.println(((FaceGraphic)FaceGraphic.context).mFaceHappiness);
+                    }
                 }
 
             }
