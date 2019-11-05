@@ -27,7 +27,7 @@
 
         <div class="columns" style="margin: 0 30px;">
           <div class="column">
-              <h3>최근 표정 분포(20회)</h3>
+              <h3>최근 표정 분포</h3>
               <pie-chart v-if="pieloaded" :data="pieData" :options="pieOptions"></pie-chart>
           </div>
           
@@ -44,8 +44,8 @@
     
     <div class="card">
       <div class="card-header">
-        신규 소식
-        <small>News</small>
+        새소식
+        <small>Notice</small>
       </div>
       <div class="card-body">
         <table class="table table-margin">
@@ -221,52 +221,12 @@ export default {
     
   },
   created: async function() {
-    print("create")
-      //const result = await this.$http.get(`/weeklyquiz/problem`)
-      //this.weekquiz = result.data;
       const res = await this.$http.get(`http://localhost:3000/users/getUser/lmj`)
       this.user = res.data
-      this.totalSubmission = this.submissionUser.length;
-      this.getTime();
   },
   methods: {
-    variant (value) {
-      let $variant
-      if (value <= 25) {
-        $variant = 'info'
-      } else if (value > 25 && value <= 50) {
-        $variant = 'success'
-      } else if (value > 50 && value <= 75) {
-        $variant = 'warning'
-      } else if (value > 75 && value <= 100) {
-        $variant = 'danger'
-      }
-      return $variant
-    },
-    flag (value) {
-      return 'flag-icon flag-icon-' + value
-    },
-    async userNumber() {
-      const result = await this.$http.get(`/weeklyquiz/usercount`)
-      this.users = result.data.count;
-    },
-    getTime() { 
-      this.now = new Date();
-      this.dday = new Date(this.weekquiz.dueDate);
-      this.days = (this.dday - this.now) / 1000 / 60 / 60 / 24; 
-      this.dRound = Math.floor(this.days); 
-      this.hours = (this.dday - this.now) / 1000 / 60 / 60 - (24 * this.dRound); 
-      this.hRound = Math.floor(this.hours); 
-      this.minutes = (this.dday - this.now) / 1000 /60 - (24 * 60 * this.dRound) - (60 * this.hRound); 
-      this.mRound = Math.floor(this.minutes); 
-      this.seconds = (this.dday - this.now) / 1000 - (24 * 60 * 60 * this.dRound) - (60 * 60 * this.hRound) - (60 * this.mRound); 
-      this.sRound = Math.round(this.seconds);
-    },
     async getNotice() {
-      const count = 5;
-      //const result = await this.$http.get      (`/weeklyquiz/recentnotice/`+count)
-      //this.recentnotice = result.data;
-      this.recentnotice = [{'title': " 모델 등록 방법(KT 표준)", createdAt: '2019-08-18', author: 'KT AI IoT'}, {title: ' 제휴 신청 방법 및 양식', createdAt: '2019-08-20', author: 'KT AI IoT'}]
+      this.recentnotice = [{'title': " App New Version 2.0", createdAt: '2019-11-03', author: 'MJ Lyou'}, {title: ' You can download this app now!', createdAt: '2019-10-20', author: 'MJ Lyou'}]
       console.log(this.recentnotice)
     },
     async getGuide() {
