@@ -49,7 +49,10 @@ router.get('/getAllResult/:user', wrap(async (req, res) => {
       userId: id.dataValues.id
     },
     offset: 0,
-    limit: 20
+    limit: 20,
+    order: [
+      ['createdAt', 'DESC']
+    ]
   });
   console.log(result);
   res.send(result);
