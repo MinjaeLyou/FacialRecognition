@@ -5,40 +5,45 @@
     android:versionCode="1"
     android:versionName="1">
 
+    <uses-sdk android:targetSdkVersion="23" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-sdk android:targetSdkVersion="23" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:theme="@style/Theme.AppCompat"
-        android:label="Face Recognition">
+        android:label="Face Recognition"
+        android:theme="@style/Theme.AppCompat">
 
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="face" />
 
         <activity
-            android:name="com.google.android.gms.samples.vision.face.facetracker.FaceTrackerActivity"
+            android:name=".FaceTrackerActivity"
+            >
+
+        </activity>
+        <activity android:name=".Analysis" />
+        <activity
+            android:name=".LoginActivity"
             android:icon="@drawable/icon"
             android:label="Face Recognition"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="fullSensor">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".Analysis"></activity>
     </application>
 
 </manifest>

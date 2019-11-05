@@ -136,7 +136,7 @@ public class Analysis extends AppCompatActivity {
 
                 PieData data = new PieData((dataSet));
                 data.setValueTextSize(20f);
-                data.setValueTextColor(Color.YELLOW);
+                data.setValueTextColor(Color.DKGRAY);
 
                 Legend legendpie = pieChart.getLegend();
                 legendpie.setTextColor(Color.WHITE);

@@ -24,7 +24,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:textSize="26sp"
-                android:text="지난 표정 분포"/>
+                android:text="최근 표정 분포"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:layout_width="match_parent"
