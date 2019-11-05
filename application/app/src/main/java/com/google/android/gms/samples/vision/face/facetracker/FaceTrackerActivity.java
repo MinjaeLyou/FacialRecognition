@@ -78,6 +78,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     public static float avg= 0;
     //public static float result[] = new float[20];
     public static List<Float> result = new ArrayList<Float>();
+    public static final int[] count = {0};
     //==============================================================================================
     // Activity Methods
     //==============================================================================================
@@ -142,7 +143,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         }
 
         //final float[] result = {0};
-        final int[] count = {0};
+
         Timer m_timer = new Timer();
         TimerTask m_task = new TimerTask() {
             @Override
@@ -181,40 +182,45 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         float sum = 0;
         System.out.println("result is" + test);
         System.out.println("Firnal is" + result);
-        for ( int i = 0; i < result.size(); i++)
-            sum += result.get(i);
-        avg = sum / result.size();
-        System.out.println("avg is" + avg);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(APIService.URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        System.out.println("comcom");
-        APIService retrofitExService = retrofit.create(APIService.class);
-        HashMap<String, Object> input = new HashMap<>();
-        input.put("userId", "lmj");
-        input.put("result", avg);
-        retrofitExService.postData(input).enqueue(new Callback<Data>() {
-            @Override
-            public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
-                if (response.isSuccessful()) {
-                    Data body = response.body();
-                    if (body != null) {
-                        Log.d("data.getUserId()", body.getResult() + "");
-                        Log.e("postData end", "======================================");
+        if(result.size() == 0){
+            Toast.makeText(FaceTrackerActivity.this, "결과값이 없습니다.", Toast.LENGTH_LONG).show();
+        } else {
+            for ( int i = 0; i < result.size(); i++)
+                sum += result.get(i);
+            avg = sum / result.size();
+            System.out.println("avg is" + avg);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(APIService.URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            System.out.println("comcom");
+            APIService retrofitExService = retrofit.create(APIService.class);
+            HashMap<String, Object> input = new HashMap<>();
+            input.put("userId", "lmj");
+            input.put("result", avg);
+            retrofitExService.postData(input).enqueue(new Callback<Data>() {
+                @Override
+                public void onResponse(@NonNull Call<Data> call, @NonNull Response<Data> response) {
+                    if (response.isSuccessful()) {
+                        Data body = response.body();
+                        if (body != null) {
+                            Log.d("data.getUserId()", body.getResult() + "");
+                            Log.e("postData end", "======================================");
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+                @Override
+                public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
 
-            }
-        });
+                }
+            });
 
-        Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), Analysis.class);
-        startActivity(intent);
+            Toast.makeText(FaceTrackerActivity.this, "서버로 결과를 전송했습니다.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), Analysis.class);
+            startActivity(intent);
+        }
+
     }
 
     /**

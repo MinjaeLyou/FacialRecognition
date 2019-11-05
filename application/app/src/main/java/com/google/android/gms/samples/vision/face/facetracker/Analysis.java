@@ -159,6 +159,9 @@ public class Analysis extends AppCompatActivity {
         lineChart.animateY(2000, Easing.EaseInCubic);
         lineChart.invalidate();
 
+        FaceTrackerActivity.result.clear();
+        FaceTrackerActivity.count[0] = 0;
+
     }
 
 
