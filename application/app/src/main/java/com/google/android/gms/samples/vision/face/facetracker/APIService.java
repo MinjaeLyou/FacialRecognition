@@ -33,6 +33,9 @@ public interface APIService {
     @GET("/users/getUser/{userId}")
     Call<Data> getData(@Path("userId") String userId);
 
+    @GET("/face/getAllResult/{userId}")
+    Call<Data> getAllResult(@Path("userId") String userId);
+
     /**
      * GET 방식, URL/posts/{userId} 호출.
      * Data Type의 여러 개의 JSON을 통신을 통해 받음.

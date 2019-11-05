@@ -4,11 +4,14 @@ public class Data {
     private final String userId;
     private final String password;
     private final float result;
+    private final int posOrNeg;
 
-    public Data(String userId, String password, float result) {
+
+    public Data(String userId, String password, float result, int posOrNeg) {
         this.userId = userId;
         this.password = password;
         this.result = result;
+        this.posOrNeg = posOrNeg;
     }
 
     public String getUserId() {
@@ -21,5 +24,9 @@ public class Data {
 
     public float getResult() {
         return result;
+    }
+
+    public int getPosOrNeg() {
+        return posOrNeg;
     }
 }
