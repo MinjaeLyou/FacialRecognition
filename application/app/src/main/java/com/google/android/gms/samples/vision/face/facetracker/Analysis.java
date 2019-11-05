@@ -197,7 +197,7 @@ public class Analysis extends AppCompatActivity {
 
                 Legend legend = lineChart.getLegend();
                 legend.setTextColor(Color.WHITE);
-                legend.setTextSize(20);
+                legend.setTextSize(13);
 
                 lineChart.setDoubleTapToZoomEnabled(false);
                 lineChart.setDrawGridBackground(false);
