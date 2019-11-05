@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
-    String URL = "http://e38a8f1f.ngrok.io";
+    String URL = "http://15260b78.ngrok.io";
 
     /**
      * GET 방식, URL/posts/{userId} 호출.

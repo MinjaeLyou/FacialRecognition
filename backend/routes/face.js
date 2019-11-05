@@ -6,7 +6,6 @@ const models = require('../models');
 
 router.post('/addResult',wrap(async (req, res) => {
   console.log(req.body);
-  //const uid = req.body.userId
   const id = await models.users.findOne({
     where:{
       userId: req.body.userId
@@ -25,7 +24,6 @@ router.post('/addResult',wrap(async (req, res) => {
     result: String(req.body.result),
     userId: id.dataValues.id
   });
-  console.log("222")
   if(face){
     res.send({
       result: true,
