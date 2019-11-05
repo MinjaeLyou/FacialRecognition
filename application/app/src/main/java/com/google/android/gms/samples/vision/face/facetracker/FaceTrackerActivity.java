@@ -148,23 +148,25 @@ public final class FaceTrackerActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(((FaceGraphic)FaceGraphic.context) != null)  {
-                    try {
+                    //try {
                         //System.out.println(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
-                        //System.out.println(result.get(count[0]));
                         System.out.println("test");
-                        if (((FaceGraphic) FaceGraphic.context).mFaceHappiness != result.get(count[0])) {
+                        System.out.println(result);
+                    if(result.size() != 0){
+                        if (((FaceGraphic) FaceGraphic.context).mFaceHappiness != result.get(count[0] -1)) {
                             System.out.println("diff");
                             result.add(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
                             count[0]++;
                             System.out.println(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
                         }else
                             System.out.println("same");
-                    }catch (Exception e){
+                    }else{
+                        System.out.println("expe");
                         result.add(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
                         count[0]++;
                         System.out.println(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
                     }
-
+                System.out.println(result);
                 }
 
             }
