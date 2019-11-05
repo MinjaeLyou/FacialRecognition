@@ -172,7 +172,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
 
             }
         };
-        m_timer.schedule(m_task, 2000, 5000);
+        m_timer.schedule(m_task, 2000, 3000);
     }
 
     public void complete() {
@@ -265,6 +265,8 @@ public final class FaceTrackerActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         FaceDetector detector = new FaceDetector.Builder(context)
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
+                .setTrackingEnabled(true)
+                .setProminentFaceOnly(true)
                 .build();
 
         detector.setProcessor(
