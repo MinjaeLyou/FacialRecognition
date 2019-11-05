@@ -18,6 +18,14 @@
             android:orientation="vertical"
             android:id="@+id/linearinscroll">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="26sp"
+                android:text="지난 표정 분포"/>
+
             <com.github.mikephil.charting.charts.PieChart
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
@@ -26,13 +34,21 @@
 
             </com.github.mikephil.charting.charts.PieChart>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="26sp"
+                android:text="이번 표정 분포"/>
+
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/line_chart"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginBottom="50dp"/>
 
         </LinearLayout>
@@ -42,9 +58,4 @@
 
 
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 </android.support.design.widget.CoordinatorLayout>
