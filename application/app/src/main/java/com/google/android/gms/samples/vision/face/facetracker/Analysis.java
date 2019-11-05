@@ -40,6 +40,8 @@ public class Analysis extends AppCompatActivity {
     private LineChart lineChart;
     private PieChart pieChart;
     public static List<Float> result = FaceTrackerActivity.result;
+
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -56,15 +58,155 @@ public class Analysis extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Data>> call, @NonNull Response<List<Data>> response) {
                 System.out.println("Twoooo");
+                Boolean pos[] = new Boolean[20];
+                String res[] = new String[20];
+                int first = 1;
+                int second = 1;
+                int third = 1;
+                int fourth = 1;
+                int fifth = 1;
                 if (response.isSuccessful()) {
                     List<Data> datas = response.body();
                     if (datas != null) {
                         for (int i = 0; i < datas.size(); i++) {
                             Log.e("data" + i, datas.get(i).getResult() + "");
+                            pos[i] = datas.get(i).getPosOrNeg();
+                            res[i] = datas.get(i).getResult();
+                            if (Float.parseFloat(datas.get(i).getResult()) < 0.2)
+                                first ++;
+                            else if(Float.parseFloat(datas.get(i).getResult()) < 0.4)
+                                second++;
+                            else if(Float.parseFloat(datas.get(i).getResult()) < 0.6)
+                                third++;
+                            else if(Float.parseFloat(datas.get(i).getResult()) < 0.8)
+                                fourth++;
+                            else
+                                fifth++;
+
+
                         }
                         Log.e("getData2 end", "======================================");
                     }
                 }
+                pieChart = (PieChart)findViewById(R.id.piechart);
+
+                pieChart.setUsePercentValues(true);
+                pieChart.getDescription().setEnabled(false);
+                pieChart.setExtraOffsets(5,10,5,5);
+
+                pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+                pieChart.setDrawHoleEnabled(false);
+                pieChart.setHoleColor(Color.WHITE);
+                pieChart.setTransparentCircleRadius(61f);
+                pieChart.setEntryLabelColor(Color.WHITE);
+
+                ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+                System.out.println(first);
+                System.out.println(second);
+                System.out.println(third);
+                System.out.println(fourth);
+                System.out.println(fifth);
+
+                yValues.add(new PieEntry(first,"매우 긍정"));
+                yValues.add(new PieEntry(second,"긍정"));
+                yValues.add(new PieEntry(third,"보통"));
+                yValues.add(new PieEntry(fourth,"부정"));
+                yValues.add(new PieEntry(fifth,"매우 부정"));
+                //yValues.add(new PieEntry(40f,"Korea"));
+                System.out.println("chckck");
+                Description descriptionPie = new Description();
+                descriptionPie.setText("20회 동안 표정 분포"); //라벨
+                descriptionPie.setTextSize(20);
+                descriptionPie.setTextColor(Color.WHITE);
+                pieChart.setDescription(descriptionPie);
+                pieChart.setCenterTextColor(Color.WHITE);
+
+                pieChart.animateY(1000, Easing.EaseInOutCubic); //애니메이션
+
+                PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+                dataSet.setSliceSpace(3f);
+                dataSet.setSelectionShift(5f);
+                dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+                dataSet.setValueTextSize(30f);
+
+
+                pieChart.setNoDataTextColor(Color.WHITE);
+
+                PieData data = new PieData((dataSet));
+                data.setValueTextSize(20f);
+                data.setValueTextColor(Color.YELLOW);
+
+                Legend legendpie = pieChart.getLegend();
+                legendpie.setTextColor(Color.WHITE);
+                legendpie.setTextSize(13f);
+
+                pieChart.setData(data);
+
+                lineChart = (LineChart)findViewById(R.id.line_chart);
+
+                List<Entry> entries = new ArrayList<>();
+
+//        entries.add(new Entry(1, 1));
+//        entries.add(new Entry(2, 2));
+//        entries.add(new Entry(3, 0));
+//        entries.add(new Entry(4, 4));
+//        entries.add(new Entry(5, 3));
+                for(int i = 0; i < result.size(); i++){
+                    entries.add(new Entry(i + 1, result.get(i)));
+                }
+
+                LineDataSet lineDataSet = new LineDataSet(entries, "이번 표정 분포");
+                lineDataSet.setLineWidth(2);
+                lineDataSet.setCircleRadius(6);
+                lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setCircleHoleColor(Color.BLUE);
+                lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setDrawCircleHole(true);
+                lineDataSet.setDrawCircles(true);
+                lineDataSet.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet.setDrawHighlightIndicators(false);
+                lineDataSet.setDrawValues(false);
+
+                lineChart.setGridBackgroundColor(Color.WHITE);
+                lineChart.setNoDataTextColor(Color.WHITE);
+
+                LineData lineData = new LineData(lineDataSet);
+                lineChart.setData(lineData);
+                lineData.setValueTextColor(Color.WHITE);
+
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTextColor(Color.WHITE);
+                xAxis.enableGridDashedLine(8, 24, 0);
+                xAxis.setTextSize(13f);
+
+                YAxis yLAxis = lineChart.getAxisLeft();
+                yLAxis.setTextColor(Color.WHITE);
+                yLAxis.setTextSize(13f);
+
+                YAxis yRAxis = lineChart.getAxisRight();
+                yRAxis.setDrawLabels(false);
+                yRAxis.setDrawAxisLine(false);
+                yRAxis.setDrawGridLines(false);
+
+                Description description = new Description();
+                description.setText("");
+
+                Legend legend = lineChart.getLegend();
+                legend.setTextColor(Color.WHITE);
+                legend.setTextSize(20);
+
+                lineChart.setDoubleTapToZoomEnabled(false);
+                lineChart.setDrawGridBackground(false);
+                lineChart.setDescription(description);
+                lineChart.animateY(2000, Easing.EaseInCubic);
+                lineChart.invalidate();
+
+                FaceTrackerActivity.result.clear();
+                FaceTrackerActivity.count[0] = 0;
             }
 
             @Override
@@ -87,119 +229,141 @@ public class Analysis extends AppCompatActivity {
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.}
 
-        pieChart = (PieChart)findViewById(R.id.piechart);
+//        System.out.println(res[5]);
+//        System.out.println(Float.parseFloat(res[5]));
+//        for (int i = 0; i < 20; i++) {
+//            if (Float.parseFloat(res[i]) < 0.2)
+//                first ++;
+//            else if(Float.parseFloat(res[i]) < 0.4)
+//                second++;
+//            else if(Float.parseFloat(res[i]) < 0.6)
+//                third++;
+//            else if(Float.parseFloat(res[i]) < 0.8)
+//                fourth++;
+//            else
+//                fifth++;
+//
+//        }
 
-        pieChart.setUsePercentValues(true);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
-
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
-
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
-        pieChart.setEntryLabelColor(Color.WHITE);
-
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-
-        yValues.add(new PieEntry(34f,"Japan"));
-        yValues.add(new PieEntry(23f,"USA"));
-        yValues.add(new PieEntry(14f,"UK"));
-        yValues.add(new PieEntry(35f,"India"));
-        yValues.add(new PieEntry(40f,"Russia"));
-        yValues.add(new PieEntry(40f,"Korea"));
-
-        Description descriptionPie = new Description();
-        descriptionPie.setText("20회 동안 표정 분포"); //라벨
-        descriptionPie.setTextSize(20);
-        descriptionPie.setTextColor(Color.WHITE);
-        pieChart.setDescription(descriptionPie);
-        pieChart.setCenterTextColor(Color.WHITE);
-
-        pieChart.animateY(1000, Easing.EaseInOutCubic); //애니메이션
-
-        PieDataSet dataSet = new PieDataSet(yValues,"Countries");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        dataSet.setValueTextSize(30f);
-
-
-        pieChart.setNoDataTextColor(Color.WHITE);
-
-        PieData data = new PieData((dataSet));
-        data.setValueTextSize(20f);
-        data.setValueTextColor(Color.YELLOW);
-
-        Legend legendpie = pieChart.getLegend();
-        legendpie.setTextColor(Color.WHITE);
-        legendpie.setTextSize(13f);
-
-        pieChart.setData(data);
-
-        lineChart = (LineChart)findViewById(R.id.line_chart);
-
-        List<Entry> entries = new ArrayList<>();
-
-//        entries.add(new Entry(1, 1));
-//        entries.add(new Entry(2, 2));
-//        entries.add(new Entry(3, 0));
-//        entries.add(new Entry(4, 4));
-//        entries.add(new Entry(5, 3));
-        for(int i = 0; i < result.size(); i++){
-            entries.add(new Entry(i + 1, result.get(i)));
-        }
-
-        LineDataSet lineDataSet = new LineDataSet(entries, "이번 표정 분포");
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setCircleRadius(6);
-        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setCircleHoleColor(Color.BLUE);
-        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setDrawCircleHole(true);
-        lineDataSet.setDrawCircles(true);
-        lineDataSet.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet.setDrawHighlightIndicators(false);
-        lineDataSet.setDrawValues(false);
-
-        lineChart.setGridBackgroundColor(Color.WHITE);
-        lineChart.setNoDataTextColor(Color.WHITE);
-
-        LineData lineData = new LineData(lineDataSet);
-        lineChart.setData(lineData);
-        lineData.setValueTextColor(Color.WHITE);
-
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.enableGridDashedLine(8, 24, 0);
-        xAxis.setTextSize(13f);
-
-        YAxis yLAxis = lineChart.getAxisLeft();
-        yLAxis.setTextColor(Color.WHITE);
-        yLAxis.setTextSize(13f);
-
-        YAxis yRAxis = lineChart.getAxisRight();
-        yRAxis.setDrawLabels(false);
-        yRAxis.setDrawAxisLine(false);
-        yRAxis.setDrawGridLines(false);
-
-        Description description = new Description();
-        description.setText("");
-
-        Legend legend = lineChart.getLegend();
-        legend.setTextColor(Color.WHITE);
-        legend.setTextSize(20);
-
-        lineChart.setDoubleTapToZoomEnabled(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.setDescription(description);
-        lineChart.animateY(2000, Easing.EaseInCubic);
-        lineChart.invalidate();
-
-        FaceTrackerActivity.result.clear();
-        FaceTrackerActivity.count[0] = 0;
+//        pieChart = (PieChart)findViewById(R.id.piechart);
+//
+//        pieChart.setUsePercentValues(true);
+//        pieChart.getDescription().setEnabled(false);
+//        pieChart.setExtraOffsets(5,10,5,5);
+//
+//        pieChart.setDragDecelerationFrictionCoef(0.95f);
+//
+//        pieChart.setDrawHoleEnabled(false);
+//        pieChart.setHoleColor(Color.WHITE);
+//        pieChart.setTransparentCircleRadius(61f);
+//        pieChart.setEntryLabelColor(Color.WHITE);
+//
+//        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+//
+//        System.out.println(first);
+//        System.out.println(second);
+//        System.out.println(third);
+//        System.out.println(fourth);
+//        System.out.println(fifth);
+//
+//        yValues.add(new PieEntry(first,"매우 긍정"));
+//        yValues.add(new PieEntry(second,"긍정"));
+//        yValues.add(new PieEntry(third,"보통"));
+//        yValues.add(new PieEntry(fourth,"부정"));
+//        yValues.add(new PieEntry(fifth,"매우 부정"));
+//        //yValues.add(new PieEntry(40f,"Korea"));
+//        System.out.println("chckck");
+//        Description descriptionPie = new Description();
+//        descriptionPie.setText("20회 동안 표정 분포"); //라벨
+//        descriptionPie.setTextSize(20);
+//        descriptionPie.setTextColor(Color.WHITE);
+//        pieChart.setDescription(descriptionPie);
+//        pieChart.setCenterTextColor(Color.WHITE);
+//
+//        pieChart.animateY(1000, Easing.EaseInOutCubic); //애니메이션
+//
+//        PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+//        dataSet.setSliceSpace(3f);
+//        dataSet.setSelectionShift(5f);
+//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+//        dataSet.setValueTextSize(30f);
+//
+//
+//        pieChart.setNoDataTextColor(Color.WHITE);
+//
+//        PieData data = new PieData((dataSet));
+//        data.setValueTextSize(20f);
+//        data.setValueTextColor(Color.YELLOW);
+//
+//        Legend legendpie = pieChart.getLegend();
+//        legendpie.setTextColor(Color.WHITE);
+//        legendpie.setTextSize(13f);
+//
+//        pieChart.setData(data);
+//
+//        lineChart = (LineChart)findViewById(R.id.line_chart);
+//
+//        List<Entry> entries = new ArrayList<>();
+//
+////        entries.add(new Entry(1, 1));
+////        entries.add(new Entry(2, 2));
+////        entries.add(new Entry(3, 0));
+////        entries.add(new Entry(4, 4));
+////        entries.add(new Entry(5, 3));
+//        for(int i = 0; i < result.size(); i++){
+//            entries.add(new Entry(i + 1, result.get(i)));
+//        }
+//
+//        LineDataSet lineDataSet = new LineDataSet(entries, "이번 표정 분포");
+//        lineDataSet.setLineWidth(2);
+//        lineDataSet.setCircleRadius(6);
+//        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+//        lineDataSet.setCircleHoleColor(Color.BLUE);
+//        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+//        lineDataSet.setDrawCircleHole(true);
+//        lineDataSet.setDrawCircles(true);
+//        lineDataSet.setDrawHorizontalHighlightIndicator(false);
+//        lineDataSet.setDrawHighlightIndicators(false);
+//        lineDataSet.setDrawValues(false);
+//
+//        lineChart.setGridBackgroundColor(Color.WHITE);
+//        lineChart.setNoDataTextColor(Color.WHITE);
+//
+//        LineData lineData = new LineData(lineDataSet);
+//        lineChart.setData(lineData);
+//        lineData.setValueTextColor(Color.WHITE);
+//
+//
+//        XAxis xAxis = lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setTextColor(Color.WHITE);
+//        xAxis.enableGridDashedLine(8, 24, 0);
+//        xAxis.setTextSize(13f);
+//
+//        YAxis yLAxis = lineChart.getAxisLeft();
+//        yLAxis.setTextColor(Color.WHITE);
+//        yLAxis.setTextSize(13f);
+//
+//        YAxis yRAxis = lineChart.getAxisRight();
+//        yRAxis.setDrawLabels(false);
+//        yRAxis.setDrawAxisLine(false);
+//        yRAxis.setDrawGridLines(false);
+//
+//        Description description = new Description();
+//        description.setText("");
+//
+//        Legend legend = lineChart.getLegend();
+//        legend.setTextColor(Color.WHITE);
+//        legend.setTextSize(20);
+//
+//        lineChart.setDoubleTapToZoomEnabled(false);
+//        lineChart.setDrawGridBackground(false);
+//        lineChart.setDescription(description);
+//        lineChart.animateY(2000, Easing.EaseInCubic);
+//        lineChart.invalidate();
+//
+//        FaceTrackerActivity.result.clear();
+//        FaceTrackerActivity.count[0] = 0;
 
     }
 
