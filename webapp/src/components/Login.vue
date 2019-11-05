@@ -1,5 +1,5 @@
 <template>
-  <div class="app flex-row align-items-center">
+  <div class="app flex-row align-items-center"  id="app">
     <div class="container">
       <b-row class="justify-content-center">
         <b-col md="8">

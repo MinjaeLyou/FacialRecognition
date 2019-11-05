@@ -13,7 +13,7 @@
           datasets: [
             {
               label: 'Data One',
-              backgroundColor: '#f87979',
+              backgroundColor: '#A3BAF6',
               pointBackgroundColor: 'white',
               borderWidth: 1,
               pointBorderColor: '#249EBF',
@@ -47,9 +47,16 @@
         }
       }
     },
-    mounted () {
+    mounted: async function () {
       //renderChart function renders the chart with the datacollection and options object.
       this.renderChart(this.datacollection, this.options)
+      const res = await this.$http.get(`http://localhost:3000/face/getAllResult/lmj`)
+      console.log(res)
+      for(let i = 0; i < 20; i++){
+          this.datacollection.datasets[0].data[i] = await res.data[i].result
+      }
+      console.log(this.datacollection.datasets[0].data)
+      
     }
   }
 </script>

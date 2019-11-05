@@ -1,10 +1,10 @@
 <template>
-  <div class="animated fadeIn">
-    <b-card>
+  <div id="mainapp">
+    <b-card style="margin-bottom:10px;">
       <b-row>
         <b-col sm="5"> 
-          <h4 id="traffic" class="card-title mb-0">KT 개발자 포탈</h4>
-          <div class="small text-muted">KT DEV Community Guide</div>
+          <h4 id="traffic" class="card-title mb-0">{{user.name}}님 환영합니다!</h4>
+          <div class="small text-muted">Facial Recognition for Modern People</div>
         </b-col>
         <b-col sm="7" class="d-none d-md-block">
         </b-col>
@@ -12,34 +12,35 @@
         </div>
       </b-row>
     </b-card>
-    
-    <b-row>
-            
+    <b-card style="margin-bottom:10px;">
+      <b-row>
+              
 
-    
-      <div class="col-sm-6 col-md-6 col-lg-4">
-        <b-card header="상반기 IoT 제휴">
-        <div class="chart-wrapper">
-          <line-example chartId="chart-line-01"/>
+      
+        <div class="columns" style="margin: 0 30px;">
+          <div class="column">
+              <h3>Line Chart</h3>
+              <line-chart></line-chart>
+          </div>
+          
         </div>
-      </b-card>
-      </div> 
 
-    <div class="col-sm-6 col-md-6 col-lg-4">
-      <b-card header="사용자 발화 패턴">
-        <div class="chart-wrapper">
-          <doughnut-example chartId="chart-doughnut-01"/>
+        <div class="columns" style="margin: 0 30px;">
+          <div class="column">
+              <h3>최근 표정 분포(20회)</h3>
+              <pie-chart :data="chartData" :options="chartOptions"></pie-chart>
+          </div>
+          
         </div>
-      </b-card>
-      </div>
-    <div class="col-sm-6 col-md-6 col-lg-4">
-      <b-card header="사용자 기기 제어">
-        <div class="chart-wrapper">
-          <bar-example chartId="chart-bar-01"/>
-        </div>
-      </b-card>   
-    </div>  
-    </b-row>
+        <div class="columns" style="margin: 0 30px;">
+          <div class="column">
+              <h3>Line Chart</h3>
+              <vue-chart v-if="loaded" :chartdata="cdata" :options="cop"></vue-chart>
+          </div>
+          
+        </div>  
+      </b-row>
+    </b-card>
     
     <div class="card">
       <div class="card-header">
@@ -64,76 +65,25 @@
         
       </div>
     </div>
-    <b-row>
-    <div class="col-sm-6 col-md-6 col-lg-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="display:inline" class="h4 m-0" > 30 </div><small class="text-muted">registered users </small> 
-            <div> {{ weekquiz.name }} 가입자 수 </div>
-            <div class="progress-xs my-3 progress">
-              <div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" class="progress-bar bg-red" style="width: 100%">  
-              </div>
-            </div>
-            <small class="text-muted">남은 시간 {{dRound}} day {{hRound}} hr {{mRound}} min </small>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-6 col-md-6 col-lg-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="display:inline" class="h4 m-0"> 22</div> <small class="text-muted">&nbsp; 3<sup>rd</sup> party companies</small> 
-            <div> 제휴사 수 </div>
-            <div class="progress-xs my-3 progress">
-              <div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" class="progress-bar bg-success" style="width: 100%;">  </div>
-            </div>
-            <small class="text-muted">&nbsp;</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-6 col-md-6 col-lg-4">
-        <div class="card">  
-          <div class="card-body">
-            <div style="display:inline" class="h4 m-0"> 5</div> <small class="text-muted">&nbsp; applied companies</small> 
-            <div> 제휴 신청 </div>
-            <!-- submitted length 받아오는 것 수정해야 됨 -->
-            <div class="progress-xs my-3 progress">
-              <div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" class="progress-bar bg-warning" style="width: 100%;">  </div>
-            </div>
-            <small class="text-muted">&nbsp;</small>
-          </div>
-        </div>
-      </div>
-      </b-row>
   </div>
 </template>
 
 <script>
-import CardBarChartExample from './dashboard/CardBarChartExample'
-import MainChartExample from './dashboard/MainChartExample'
-import SocialBoxChartExample from './dashboard/SocialBoxChartExample'
-import CalloutChartExample from './dashboard/CalloutChartExample'
+import LineChart from '@/components/LineChart'
 import { Callout } from '@coreui/vue'
-import LineExample from './charts/LineExample'
-import DoughnutExample from './charts/DoughnutExample'
-import BarExample from './charts/BarExample'
-
+import PieChart from "./PieChart.js";
+import VueChart from '@/components/VueChartJS'
 export default {
   name: 'dashboard',
   components: {
     Callout,
-    CardBarChartExample,
-    MainChartExample,
-    SocialBoxChartExample,
-    CalloutChartExample,
-    LineExample,
-    DoughnutExample,
-    BarExample,
+    LineChart,
+    PieChart,
+    VueChart
   },
   data() {
     return {
-      users: '',
+      user: '',
       weekquiz: {},
       guide: {},
       recentnotice: [],
@@ -149,18 +99,71 @@ export default {
       sRound:0,
       submitted:0,
       totalSubmission:0,
+      chartOptions: {
+        hoverBorderWidth: 20
+      },
+      chartData: {
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: ["매우 긍정", "긍정", "보통", "부정", "매우 부정"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#A3BAF6", "#B654FB"],
+            data: [40, 12, 16, 4, 28]
+          }
+        ]
+      },
+      cdata: null,
+      cop: null,
+      loaded: false
     }
   },
-  mounted: function() {
-    this.userNumber();
+  mounted: async function() {
+    this.loaded = false
+    const res = await this.$http.get(`http://localhost:3000/face/getAllResult/lmj`)
+    let pos = 0
+    let neg = 0
+    for(let i = 0; i < 20; i++){
+      if(res.data[i].posOrNeg)
+        pos += 1
+      else
+        neg += 1
+    }
+    console.log(neg)
+    this.loaded = true
+    this.cdata = {
+      labels: ["긍정", "부정"],
+        datasets: [
+          {
+            label: "긍정 / 부정",
+            backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+            data: [pos, neg]
+          }
+        ]
+    }
+    this.cop = {
+      scales:{
+        yAxes: [
+          {
+            ticks:{
+              beginAtZero: true
+            }
+          }
+        ]
+      }
+    }
+    //this.userNumber();
     this.getNotice();
     this.getGuide();
+    
   },
   created: async function() {
-      const result = await this.$http.get(`/weeklyquiz/problem`)
-      this.weekquiz = result.data;
-      const res = await this.$http.get(`/weeklyquiz/submission/${this.weekquiz.problem_id}`)
-      this.submissionUser = res.data
+    print("create")
+      //const result = await this.$http.get(`/weeklyquiz/problem`)
+      //this.weekquiz = result.data;
+      const res = await this.$http.get(`http://localhost:3000/users/getUser/lmj`)
+      this.user = res.data
       this.totalSubmission = this.submissionUser.length;
       this.getTime();
   },
@@ -208,7 +211,7 @@ export default {
       // this.$http.get(`/weeklyquiz/notice/0`).then((result) => {
       //   this.guide = result.data;
       // });
-      this.guide.text = "<p style='margin-top: 10px;'>\n&nbsp;&nbsp;&nbsp;&nbsp;제휴 신청과 모델 등록을 한 포탈에서 해보세요.</p>"
+      this.guide.text = "<p style='margin-top: 10px;'>\n&nbsp;&nbsp;&nbsp;&nbsp;표정을 객관적인 지표로 확인해보세요.</p>"
     },
     async viewRecentNotice(id) {
       this.$router.push({'path' : '/notice/' +id})
@@ -221,5 +224,13 @@ export default {
   /* IE fix */
   #card-chart-01, #card-chart-02 {
     width: 100% !important;
+  }
+
+  #mainapp {
+    margin: 10px;
+  }
+
+  b-card {
+    margin: 5px;
   }
 </style>
