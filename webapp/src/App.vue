@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/facialr.png" width="200px">
+    
     <router-view/>
   </div>
 </template>
@@ -19,16 +19,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  background-color: white;
   width: 800px;
   height: 600px;
   margin: 100px auto;
-  border: 1px solid #bcbcbc;
-  border-radius: 3%;
 }
 
 img{
-  margin-top: 15px;
+  margin-top: 1px;
 }
 
 body {
