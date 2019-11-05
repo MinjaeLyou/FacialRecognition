@@ -3,9 +3,12 @@ package com.google.android.gms.samples.vision.face.facetracker;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.icu.lang.UScript;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +30,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Analysis extends AppCompatActivity {
     private LineChart lineChart;
     private PieChart pieChart;
@@ -36,6 +45,36 @@ public class Analysis extends AppCompatActivity {
         super.onCreate(icicle);
         setContentView(R.layout.analysis);
         System.out.println(result);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        APIService retrofitExService = retrofit.create(APIService.class);
+        System.out.println("noww");
+        retrofitExService.getAllResult("lmj").enqueue(new Callback<List<Data>> () {
+            @Override
+            public void onResponse(@NonNull Call<List<Data>> call, @NonNull Response<List<Data>> response) {
+                System.out.println("Twoooo");
+                if (response.isSuccessful()) {
+                    List<Data> datas = response.body();
+                    if (datas != null) {
+                        for (int i = 0; i < datas.size(); i++) {
+                            Log.e("data" + i, datas.get(i).getResult() + "");
+                        }
+                        Log.e("getData2 end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Data>> call, @NonNull Throwable t) {
+                System.out.println("fail");
+                System.out.println(call);
+                System.out.println(t);
+            }
+        });
+
 
         //Button btn = (Button) findViewById(R.id.button3);
 //
@@ -163,6 +202,10 @@ public class Analysis extends AppCompatActivity {
         FaceTrackerActivity.count[0] = 0;
 
     }
+
+//    public void getSecond(String id, final RetroCallback callback) {
+//        apiService.getSecond(id).enqueue(new Callback<List<ResponseGet>>() { @Override public void onResponse(Call<List<ResponseGet>> call, Response<List<ResponseGet>> response) { if (response.isSuccessful()) { callback.onSuccess(response.code(), response.body()); } else { callback.onFailure(response.code()); } } @Override public void onFailure(Call<List<ResponseGet>> call, Throwable t) { callback.onError(t); } }); }
+//
 
 
 

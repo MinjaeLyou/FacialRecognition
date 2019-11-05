@@ -33,8 +33,8 @@ public interface APIService {
     @GET("/users/getUser/{userId}")
     Call<Data> getData(@Path("userId") String userId);
 
-    @GET("/face/getAllResult/{userId}")
-    Call<Data> getAllResult(@Path("userId") String userId);
+//    @GET("/face/getAllResult/{userId}")
+//    Call<Data> getAllResult(@Path("userId") String userId);
 
     /**
      * GET 방식, URL/posts/{userId} 호출.
@@ -45,8 +45,8 @@ public interface APIService {
      * @param userId 요청에 필요한 userId
      * @return 다수의 Data 객체를 JSON 형태로 반환.
      */
-    @GET("/posts")
-    Call<List<Data>> getData2(@Query("userId") String userId);
+    @GET("/face/getAllResult/{userId}")
+    Call<List<Data>> getAllResult(@Path("userId") String userId);
 
 
     /**
