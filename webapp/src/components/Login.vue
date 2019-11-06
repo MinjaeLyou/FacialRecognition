@@ -59,9 +59,9 @@ export default {
       console.log(res.data.data.id);
       if(res.data.result){
         alert("로그인에 성공했습니다.")
-        // this.$session.start()
-        // this.$session.set('uid', this.uid)
-        // this.$session.set('manufacturer', res.data.data.id)
+        this.$session.start()
+        this.$session.set('uid', this.uid)
+        this.$session.set('name', res.data.data.name)
         this.$router.push({name: "Main"})
       } else 
         alert("로그인에 실패했습니다.")

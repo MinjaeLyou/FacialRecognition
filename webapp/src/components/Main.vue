@@ -221,8 +221,13 @@ export default {
     
   },
   created: async function() {
+    if(!this.$session.exists()){
+      alert("로그인이 필요한 서비스입니다.")
+      this.$router.push({name: "Login"})
+    }
       const res = await this.$http.get(`http://localhost:3000/users/getUser/lmj`)
       this.user = res.data
+      console.log(this.$session.getAll())
   },
   methods: {
     async getNotice() {

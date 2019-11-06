@@ -1,8 +1,8 @@
 <template>
   <div id="mainheader">
     <img src="../assets/facialr.png" width="50px"style="margin:5px 10px;"><span style="font-size: 25px; font-family: 'Abel'; margin-top: 15px;">Facial Recognition</span>
-    <b-button variant="link" class="px-0" style="float:right; margin: 10px 30px;" v-on:click="gogit()">Logout</b-button>
-    <b-button variant="link" class="px-0" style="float:right; margin: 10px 30px; color:black;">Download App</b-button>
+    <b-button variant="link" class="px-0" style="float:right; margin: 10px 30px;" v-on:click="logout()">Logout</b-button>
+    <b-button variant="link" class="px-0" style="float:right; margin: 10px 30px; color:black;" v-on:click="gogit()">Download App</b-button>
                     
   </div>
 </template>
@@ -19,7 +19,12 @@ export default {
   },
   methods: {
     gogit() {
-        
+
+    },
+    logout(){
+      alert("로그아웃 되었습니다.")
+      this.$session.destroy()
+      this.$router.push({name: "Login"})
     }
   },
 }
