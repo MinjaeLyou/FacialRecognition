@@ -34,7 +34,7 @@
         </div>
         <div class="columns" style="margin: 0 30px;">
           <div class="column">
-              <h3>Line Chart</h3>
+              <h3>긍정/부정</h3>
               <vue-chart v-if="loaded" :chartdata="cdata" :options="cop"></vue-chart>
           </div>
           

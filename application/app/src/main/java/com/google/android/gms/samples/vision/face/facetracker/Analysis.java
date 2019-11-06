@@ -125,7 +125,7 @@ public class Analysis extends AppCompatActivity {
 
                 pieChart.animateY(1000, Easing.EaseInOutCubic); //애니메이션
 
-                PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+                PieDataSet dataSet = new PieDataSet(yValues,"긍정도");
                 dataSet.setSliceSpace(3f);
                 dataSet.setSelectionShift(5f);
                 dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
