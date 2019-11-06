@@ -43,4 +43,10 @@ router.post('/login', wrap(async (req, res) => {
   
 }));
 
+router.get('/logout', function(req, res, next) {
+  req.session.user = {};
+  delete req.session.user;
+  res.redirect('/');
+});
+
 module.exports = router;
