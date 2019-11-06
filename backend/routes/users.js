@@ -19,6 +19,29 @@ router.get('/getUser/:id', wrap(async (req, res) => {
   res.send(user);
 }));
 
+router.post('/register', wrap(async (req, res) => {
+  console.log(req.body);
+  console.log(req.body.uid);
+  const user = await models.users.create({ // 유저 검색
+      
+      userId: req.body.userId,
+      password: req.body.password
+  });
+  console.log(user);
+  if(user) {
+          delete req.body.password;
+          res.send({ // 로그인 결과 response
+              result: true,
+              data: user
+          });
+      } else {
+          res.send({
+              result: false
+          });
+      }
+  
+}));
+
 router.post('/login', wrap(async (req, res) => {
   console.log(req.body);
   console.log(req.body.uid);
