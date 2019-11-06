@@ -79,6 +79,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
     //public static float result[] = new float[20];
     public static List<Float> result = new ArrayList<Float>();
     public static final int[] count = {0};
+    public static int chk = 0;
     //==============================================================================================
     // Activity Methods
     //==============================================================================================
@@ -142,6 +143,28 @@ public final class FaceTrackerActivity extends AppCompatActivity {
             requestCameraPermission();
         }
 
+        // check smiling
+        Timer c_timer = new Timer();
+        TimerTask c_task = new TimerTask() {
+            @Override
+            public void run() {
+                if(chk == 0){
+                    System.out.println("You have to smile");
+                    Toast.makeText(FaceTrackerActivity.this, "You have to smile!", Toast.LENGTH_LONG).show();
+                }else {
+                    System.out.println("Good");
+                    chk = 0;
+                }
+            }
+        };
+
+        c_timer.schedule(c_task, 10000, 10000);
+
+//        if(((FaceGraphic)FaceGraphic.context).mFaceHappiness < 0.2){
+//            chk ++;
+//        }
+//        if(chk > )
+
         //final float[] result = {0};
 
         Timer m_timer = new Timer();
@@ -153,6 +176,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                         //System.out.println(((FaceGraphic) FaceGraphic.context).mFaceHappiness);
                         System.out.println("test");
                         System.out.println(result);
+
                     if(result.size() != 0){
                         if (((FaceGraphic) FaceGraphic.context).mFaceHappiness != result.get(count[0] -1)) {
                             System.out.println("diff");

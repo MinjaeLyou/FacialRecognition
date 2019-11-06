@@ -23,6 +23,9 @@ import android.graphics.Paint;
 import com.google.android.gms.samples.vision.face.facetracker.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.face.Face;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
  * graphic overlay view.
@@ -33,6 +36,7 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     private static final float ID_Y_OFFSET = 50.0f;
     private static final float ID_X_OFFSET = -50.0f;
     private static final float BOX_STROKE_WIDTH = 5.0f;
+    //public static int chk = 0;
 
     private static final int COLOR_CHOICES[] = {
         Color.BLUE,
@@ -106,8 +110,14 @@ class FaceGraphic extends GraphicOverlay.Graphic {
         canvas.drawText("right eye: " + String.format("%.2f", face.getIsRightEyeOpenProbability()), x + ID_X_OFFSET * 2, y + ID_Y_OFFSET * 2, mIdPaint);
         canvas.drawText("left eye: " + String.format("%.2f", face.getIsLeftEyeOpenProbability()), x - ID_X_OFFSET*2, y - ID_Y_OFFSET*2, mIdPaint);
 
+        //if()
+
         //System.out.println(face.getIsSmilingProbability());
         mFaceHappiness = (mFaceHappiness + face.getIsSmilingProbability())/2;
+
+        if(mFaceHappiness > 0.2)
+            FaceTrackerActivity.chk = 1;
+
         context = this;
         // Draws a bounding box around the face.
         float xOffset = scaleX(face.getWidth() / 2.0f);
